@@ -107,10 +107,10 @@ def predict():
             float(data['majorVessels']),
             float(data['thalassemia'])
         ]
-        prediction = model.predict([features])[0]
-        probability = model.predict_proba([features])[0][1]
-        risk_percentage = round(probability * 100, 2)
-        
+        prediction = int(model.predict([features])[0])
+        probability = float(model.predict_proba([features])[0][1])
+        risk_percentage = float(round(probability * 100, 2))
+
         # Determine risk level
         if risk_percentage > 70:
             risk_level = "high"
@@ -118,12 +118,12 @@ def predict():
             risk_level = "moderate"
         else:
             risk_level = "low"
-            
+
         # Get health advice based on risk level
         health_advice = get_health_advice(risk_level, risk_percentage)
 
         return jsonify({
-            'prediction': int(prediction),
+            'prediction': prediction,
             'probability': risk_percentage,
             'risk_level': risk_level,
             'health_advice': health_advice
